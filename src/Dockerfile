@@ -1,0 +1,27 @@
+FROM alpine:latest
+
+ARG MOSQUITTO_VERSION=2.0.15
+ENV MOSQUITTO_VERSION=$MOSQUITTO_VERSION
+
+RUN apt-get update \
+    && apt-get install -y apt-utils \
+    && apt-get install -y build-essential libssl-dev libossp-uuid16 uuid-dev libev4 libuv1 libwebsockets-dev libwrap0 libossp-uuid16 \
+    && cd /tmp/ \
+    && wget http://mosquitto.org/files/source/mosquitto-${MOSQUITTO_VERSION}.tar.gz \
+    && useradd mosquitto \
+    && tar xvzf mosquitto-${MOSQUITTO_VERSION}.tar.gz \
+    && cd mosquitto-${MOSQUITTO_VERSION} \
+    && make -j$(nproc) \
+    && make install \
+    && chown -R mosquitto:mosquitto /etc/mosquitto \
+    && /sbin/ldconfig \
+    && make clean \
+    && cd /tmp/ \
+    && rm -Rf mosquitto-${MOSQUITTO_VERSION} \
+    && apt-get remove -y apt-utils build-essential libssl-dev libossp-uuid16 uuid-dev \
+    && apt-get clean -y \
+    && apt-get autoclean -y \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
+
+CMD ["/usr/local/sbin/mosquitto"]
