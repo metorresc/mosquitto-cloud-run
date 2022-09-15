@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM arm32v7/alpine
 
 ARG MOSQUITTO_VERSION=2.0.15
 ENV MOSQUITTO_VERSION=$MOSQUITTO_VERSION
@@ -23,5 +23,7 @@ RUN apt-get update \
     && apt-get autoclean -y \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /config /data && chown -R mosquitto:mosquitto /config /data
 
 CMD ["/usr/local/sbin/mosquitto"]

@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  mqtt:
+    image: eclipse-mosquitto:2.0.15-openssl
+    hostname: mosquitto
+    ports:
+      # MQTT encrypted TCP 8883
+      - mode: host
+        target: 8883
+        published: 8883
+        protocol: tcp
+      # Websocket encrypted TCP 9883
+      - mode: host
+        target: 9883
+        published: 9883
+        protocol: tcp
+    networks:
+      - mqtt-net1
+    volumes:
+      - type: bind
+        source: /opt/mqtt/config/mosquitto.conf
+        target: /mosquitto/config/mosquitto.conf
+      - type: bind
+        source: /opt/mqtt/config/conf.d
+        target: /mosquitto/config/conf.d
+      - type: bind
+        source: /opt/mqtt/config/passwd
+        target: /mosquitto/config/passwd
+      - type: bind
+        source: /opt/mqtt/config/aclfile
+        target: /mosquitto/config/aclfile
+      - type: bind
+        source: /opt/mqtt/config/certs
+        target: /mosquitto/config/certs
+      - type: bind
+        source: /opt/mqtt/data
+        target: /mosquitto/data
+      - type: bind
+        source: /opt/mqtt/log
+        target: /mosquitto/log
+    deploy:
+      labels:
+        local.description: "Mosquitto MQTT"
+      restart_policy:
+        condition: on-failure
+
+networks:
+  mqtt-net1:
