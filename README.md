@@ -18,11 +18,7 @@
 
     sudo apt-get update -y
     sudo apt-get upgrade -y
-    curl -fsSL https://get.docker.com -o get-docker.sh
-    sudo sh get-docker.sh 
-    dockerd-rootless-setuptool.sh install
     sudo apt-get install git -y
     git clone https://github.com/metorresc/mosquitto-cloud-run.git
     cd mosquitto-cloud-run/mosquitto-rpi-server
     sh setup.sh
-

@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  mqtt:
+    image: mosquitto:latest-rpi4
+    ports:
+      # MQTT encrypted TCP 8883
+      - "8883:8883"
+    volumes:
+      - mosquitto-config:/mosquitto/config
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/log
+    deploy:
+      labels:
+        local.description: "Mosquitto MQTT by AXMOS"
+      restart_policy:
+        condition: on-failure
+volumes:
+  mosquitto-config:
+    external: true
+  mosquitto-data:
+    external: true
+  mosquitto-log:
+    external: true

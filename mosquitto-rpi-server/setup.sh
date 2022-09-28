@@ -12,6 +12,18 @@ docker volume create --name $MQTT_LOG
 export MQTT_CFG="mosquitto-config"
 docker volume create --name $MQTT_CFG
 
+sudo apt-get update -y
+sudo apt-get upgrade -y
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh 
+dockerd-rootless-setuptool.sh install
+sudo usermod -aG docker $username
+sudo apt-get install libffi-dev libssl-dev -y
+sudo apt install python3-dev -y
+sudo apt-get install -y python3 python3-pip
+sudo pip3 install docker-compose
+sudo systemctl enable docker
+
 mkdir -p /home/$username/mqtt-server
 mkdir -p /home/$username/mqtt-server/config
 mkdir -p /home/$username/mqtt-server/config/certs
@@ -20,6 +32,7 @@ mkdir -p /home/$username/mqtt-server/log
 
 cp mosquitto.conf /home/$username/mqtt-server/config/mosquitto.conf
 cp Dockerfile /home/$username/mqtt-server
+cp rpi4-compose.yml /home/$username/mqtt-server
 cp generate-certificates.sh /home/$username/mqtt-server/config/certs/generate-certificates.sh
 chmod +x /home/$username/mqtt-server/config/certs/generate-certificates.sh
 
@@ -38,4 +51,6 @@ rm -rf /home/$username/mqtt-server/config/certs/generate-certificates.sh
 sudo chown -R $username:$username config/certs
 
 cd /home/$username/mqtt-server
-docker build -t .
+docker build -t mosquitto .
+docker tag mosquitto:latest mosquitto:latest-rpi4
+docker-compose -f rpi4-compose.yaml up -d
