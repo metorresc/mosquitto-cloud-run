@@ -19,8 +19,9 @@ mkdir -p /home/$username/mqtt-server/data
 mkdir -p /home/$username/mqtt-server/log
 
 cp mosquitto.conf /home/$username/mqtt-server/config/mosquitto.conf
+cp Dockerfile /home/$username/mqtt-server
 cp generate-certificates.sh /home/$username/mqtt-server/config/certs/generate-certificates.sh
-chmod +x /homme/$username/mqtt-server/config/certs/generate-certificates.sh
+chmod +x /home/$username/mqtt-server/config/certs/generate-certificates.sh
 
 # Generate CA For Server
 sudo bash -c "cd /home/$username/mqtt-server/config/certs; /home/$username/mqtt-server/config/certs/generate-certificates.sh"
@@ -31,4 +32,9 @@ mv /home/$username/mqtt-server/config/certs/$(hostname).csr /home/$username/mqtt
 mv /home/$username/mqtt-server/config/certs/$(hostname).key /home/$username/mqtt-server/config/certs/axmos-mqtt.key
 ln -s /home/$username/mqtt-server/config/certs/axmos-mqtt.crt /home/$username/mqtt-server/config/certs/$(hostname).crt 
 ln -s /home/$username/mqtt-server/config/certs/axmos-mqtt.csr /home/$username/mqtt-server/config/certs/$(hostname).csr 
-ln -s /home/$username/mqtt-server/config/certs/axmos-mqtt.key /home/$username/mqtt-server/config/certs/$(hostname).key 
+ln -s /home/$username/mqtt-server/config/certs/axmos-mqtt.key /home/$username/mqtt-server/config/certs/$(hostname).key
+
+rm -rf /home/$username/mqtt-server/config/certs/generate-certificates.sh
+
+cd /home/$username/mqtt-server
+docker build -t .
