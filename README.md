@@ -23,6 +23,6 @@
     dockerd-rootless-setuptool.sh install
     sudo apt-get install git -y
     git clone https://github.com/metorresc/mosquitto-cloud-run.git
-    cd mosquitto-cloud-run
+    cd mosquitto-cloud-run/mosquitto-rpi-server
     sh setup.sh
 

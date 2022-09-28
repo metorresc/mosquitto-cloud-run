@@ -66,7 +66,7 @@ DIR=${TARGET:='.'}
 # may be empty ""
 ALTHOSTNAMES=${HOSTLIST}
 ALTADDRESSES=${IPLIST}
-CA_ORG='/O=IoT/OU=MQTT/emailAddress=ErnestGWilsonII@gmail.com'
+CA_ORG='/O=IoT/OU=MQTT/emailAddress=mqtt-service@axmos.tech'
 CA_DN="/CN=MQTT broker${CA_ORG}"
 CACERT=${DIR}/ca
 SERVER="${DIR}/${host}"

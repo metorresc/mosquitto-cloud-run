@@ -35,6 +35,7 @@ ln -s /home/$username/mqtt-server/config/certs/axmos-mqtt.csr /home/$username/mq
 ln -s /home/$username/mqtt-server/config/certs/axmos-mqtt.key /home/$username/mqtt-server/config/certs/$(hostname).key
 
 rm -rf /home/$username/mqtt-server/config/certs/generate-certificates.sh
+sudo chown -R $username:$username config/certs
 
 cd /home/$username/mqtt-server
 docker build -t .
