@@ -10,11 +10,7 @@ services:
       - mosquitto-config:/mosquitto/config
       - mosquitto-data:/mosquitto/data
       - mosquitto-log:/mosquitto/log
-    deploy:
-      labels:
-        local.description: "Mosquitto MQTT by AXMOS"
-      restart_policy:
-        condition: on-failure
+    restart: always
 volumes:
   mosquitto-config:
     external: true

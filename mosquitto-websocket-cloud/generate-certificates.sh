@@ -71,7 +71,7 @@ CA_DN="/CN=MQTT broker${CA_ORG}"
 CACERT=${DIR}/ca
 SERVER="${DIR}/${host}"
 SERVER_DN="/CN=${host}$CA_ORG"
-keybits=4096
+keybits=2048
 openssl=$(which openssl)
 MOSQUITTOUSER=${MOSQUITTOUSER:=$USER}
 
@@ -81,7 +81,7 @@ MOSQUITTOUSER=${MOSQUITTOUSER:=$USER}
 #
 #       defaultmd="-sha256"
 #
-defaultmd="-aes256"
+defaultmd="-sha512"
 
 function maxdays() {
         nowyear=$(date +%Y)
