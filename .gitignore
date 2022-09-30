@@ -1,2 +1,3 @@
 mosquitto-client/
-mosquitto-websocket-cloud/config/certs
+mosquitto-websocket-cloudrun/config/certs
+mosquitto-autopilot-server/config/certs

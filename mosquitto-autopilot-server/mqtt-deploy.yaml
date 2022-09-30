@@ -1,0 +1,39 @@
+# Copyright 2022 axmos.tech
+# mqtt-deploy.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-mqtt-service-singlenode
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard-rwo
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: mosquitto-mqtts
+spec:
+  volumes:
+    - name: vol-mqtt-singlenode
+      persistentVolumeClaim:
+       claimName: pvc-mqtt-service-singlenode
+  containers:
+    - name: pod-demo
+      image: nginx
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 1024Mi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+      ports:
+        - containerPort: 8883
+          name: "secure-mqtt-server"
+      volumeMounts:
+        - mountPath: "/mosquitto/data"
+          name: pvc-mqtt-service-singlenode

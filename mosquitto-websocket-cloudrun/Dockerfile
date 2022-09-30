@@ -9,20 +9,7 @@ ENV VERSION=2.0.15 \
     LWS_VERSION=4.2.1 \
     LWS_SHA256=842da21f73ccba2be59e680de10a8cce7928313048750eb6ad73b6fa50763c51
 
-RUN set -x && \
-    apt-get update -y && apt-get install -y \
-    tini \
-    lsb-release; \
-    gcsFuseRepo=gcsfuse-`lsb_release -c -s`; \
-    echo "deb http://packages.cloud.google.com/apt $gcsFuseRepo main" | \
-    tee /etc/apt/sources.list.d/gcsfuse.list; \
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
-    apt-key add -; \
-    apt-get update; \
-    apt-get install -y gcsfuse \
-    && apt-get clean
-
-RUN apt --no-cache add --virtual build-deps \
+RUN apk --no-cache add --virtual build-deps \
         build-base \
         cmake \
         cjson-dev \
@@ -106,17 +93,14 @@ RUN apt --no-cache add --virtual build-deps \
     apk del build-deps && \
     rm -rf /build
 
-RUN mkdir -p /mosquitto/config /mosquitto/data /mosquitto/log /mosquitto/config/certs
+RUN mkdir -p /mosquitto/config /mosquitto/config/certs
 COPY config/mosquitto.conf /mosquitto/config
-COPY config/certs/axmos-mqtt-cert.pem /mosquitto/config/certs
-COPY config/certs/axmos-mqtt-chain.pem /mosquitto/config/certs
-COPY config/certs/axmos-mqtt-privkey.pem /mosquitto/config/certs
 COPY config/certs/ca.crt /mosquitto/config/certs
-COPY config/certs/ca.srl /mosquitto/config/certs
-COPY config/certs/ca.key /mosquitto/config/certs
+COPY config/certs/server.crt /mosquitto/config/certs
+COPY config/certs/server.key /mosquitto/config/certs
 RUN chown -R mosquitto:mosquitto /mosquitto/config /mosquitto/data /mosquitto/log
 
-VOLUME [ "/mosquitto/data", "/mosquitto/config", "/mosquitto/log" ]
+#VOLUME [ "/mosquitto/data", "/mosquitto/config", "/mosquitto/log" ]
 
 EXPOSE 8083
 
